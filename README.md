@@ -1,3 +1,23 @@
+<p align="center">
+    <a href="https://laravel.com" target="_blank">
+        <img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo">
+    </a>
+</p>
+<hr />
+
+## Project Installation Steps:
+
+1. Clone the repository:
+2. Create the ".env" file and set the database connection values.
+3. Install project dependencies:
+    * ``` composer install ```
+4. Generate the application key:
+    * ``` php artisan key:generate ```
+5. Run database migrations:
+    * ``` php artisan migrate ```
+
+<hr />
+
 <h2>API Routes</h2>
 
 Here are the API routes for the application. All routes are prefixed with `/api/v1/`.
