@@ -20,4 +20,17 @@ class GalleryController extends Controller
 
         return $data;
     }
+
+    public function search(Request $request)
+    {
+        $books = Book::where('title', 'like', "%{$request->term}%")->paginate(12);
+        $title = 'نتائج البحث عن: '. $request->term;
+
+        $data = [
+            'title' => $title,
+            'books' => $books,
+        ];
+
+        return $data;
+    }
 }

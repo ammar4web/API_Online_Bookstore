@@ -20,5 +20,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/', [GalleryController::class, 'index'])->name('gallery.index');
+Route::get('/search', [GalleryController::class, 'search'])->name('search');
 
 require __DIR__.'/auth/auth.php';
