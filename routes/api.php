@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\V1\BookController;
+use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\GalleryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -24,5 +25,9 @@ Route::get('/', [GalleryController::class, 'index'])->name('gallery.index');
 Route::get('/search', [GalleryController::class, 'search'])->name('search');
 
 Route::get('/book/{book}', [BookController::class, 'details'])->name('book.details');
+
+Route::get('/categories', [CategoryController::class, 'list'])->name('gallery.categories.index');
+Route::get('/categories/search', [CategoryController::class, 'search'])->name('gallery.categories.search');
+Route::get('/categories/{category}', [CategoryController::class, 'result'])->name('gallery.categories.show');
 
 require __DIR__.'/auth/auth.php';

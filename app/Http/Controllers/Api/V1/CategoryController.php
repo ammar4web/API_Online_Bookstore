@@ -63,4 +63,43 @@ class CategoryController extends Controller
     {
         //
     }
+
+    public function result(Category $category)
+    {
+        $books = $category->books()->paginate(12);
+        $title = 'الكتب التابعة لتصنيف: ' . $category->name;
+
+        $data = [
+            'title' => $title,
+            'books' => $books,
+        ];
+
+        return $data;
+    }
+
+    public function list()
+    {
+        $categories = Category::all()->sortBy('name')->load(['books']);
+        $title = 'التصنيفات';
+
+        $data = [
+            'title' => $title,
+            'categories' => $categories,
+        ];
+
+        return $data;
+    }
+
+    public function search(Request $request)
+    {
+        $categories = Category::where('name', 'like', "%{$request->term}%")->get()->sortBy('name')->load(['books']);
+        $title = ' نتائج البحث عن: ' . $request->term;
+
+        $data = [
+            'title' => $title,
+            'categories' => $categories,
+        ];
+
+        return $data;
+    }
 }
