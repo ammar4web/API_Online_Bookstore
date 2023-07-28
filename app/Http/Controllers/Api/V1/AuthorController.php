@@ -63,4 +63,43 @@ class AuthorController extends Controller
     {
         //
     }
+
+    public function result(Author $author)
+    {
+        $books = $author->books()->paginate(12)->load(['publisher','category']);
+        $title = 'الكتب التابعة للمؤلف: ' . $author->name;
+
+        $data = [
+            'title' => $title,
+            'books' => $books,
+        ];
+
+        return $data;
+    }
+
+    public function list()
+    {
+        $authors = Author::all()->sortBy('name')->load(['books']);
+        $title = 'المؤلفون';
+
+        $data = [
+            'title' => $title,
+            'authors' => $authors,
+        ];
+
+        return $data;
+    }
+
+    public function search(Request $request)
+    {
+        $authors = Author::where('name', 'like', "%{$request->term}%")->get()->sortBy('name')->load(['books']);
+        $title = ' نتائج البحث عن: ' . $request->term;
+
+        $data = [
+            'title' => $title,
+            'authors' => $authors,
+        ];
+
+        return $data;
+    }
 }

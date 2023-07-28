@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\V1\AuthorController;
 use App\Http\Controllers\Api\V1\BookController;
 use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\GalleryController;
@@ -34,5 +35,9 @@ Route::get('/categories/{category}', [CategoryController::class, 'result'])->nam
 Route::get('/publishers', [PublisherController::class, 'list'])->name('gallery.publishers.index');
 Route::get('/publishers/search', [PublisherController::class, 'search'])->name('gallery.publishers.search');
 Route::get('/publishers/{publisher}', [PublisherController::class, 'result'])->name('gallery.publishers.show');
+
+Route::get('/authors', [AuthorController::class, 'list'])->name('gallery.authors.index');
+Route::get('/authors/search', [AuthorController::class, 'search'])->name('gallery.authors.search');
+Route::get('/authors/{author}', [AuthorController::class, 'result'])->name('gallery.authors.show');
 
 require __DIR__.'/auth/auth.php';
