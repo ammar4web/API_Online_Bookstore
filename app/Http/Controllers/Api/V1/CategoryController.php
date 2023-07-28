@@ -66,7 +66,7 @@ class CategoryController extends Controller
 
     public function result(Category $category)
     {
-        $books = $category->books()->paginate(12);
+        $books = $category->books()->paginate(12)->load(['publisher', 'authors']);
         $title = 'الكتب التابعة لتصنيف: ' . $category->name;
 
         $data = [
