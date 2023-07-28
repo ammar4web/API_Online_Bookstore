@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Models\Book;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BookController extends Controller
 {
@@ -62,5 +63,10 @@ class BookController extends Controller
     public function destroy(Book $book)
     {
         //
+    }
+
+    public function details(Book $book)
+    {
+        return $book->load(['publisher','category', 'authors']);
     }
 }
