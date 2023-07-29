@@ -6,5 +6,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('/admin')->middleware(['auth:sanctum', 'can:update-books'])->group(function() {
     Route::get('/', [AdminController::class, 'index'])->name('admin.index');
+    Route::get('/books/book-form-data', [BookController::class, 'getBookFormData'])->name('books.getBookFormData');
     Route::apiResource('/books', BookController::class);
 });

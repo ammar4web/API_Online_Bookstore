@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Book;
+use App\Models\Author;
+use App\Models\Category;
+use App\Models\Publisher;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class BookController extends Controller
 {
@@ -16,6 +18,24 @@ class BookController extends Controller
     {
         $books = Book::all()->load(['publisher', 'category', 'authors']);
         return $books;
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function getBookFormData()
+    {
+        $authors = Author::all();
+        $categories = Category::all();
+        $publishers = Publisher::all();
+
+        $data = [
+            'authors' => $authors,
+            'categories' => $categories,
+            'publishers' => $publishers,
+        ];
+
+        return $data;
     }
 
     /**
@@ -33,7 +53,6 @@ class BookController extends Controller
     {
         return $book->load(['publisher', 'category', 'authors']);
     }
-
 
     /**
      * Update the specified resource in storage.
@@ -53,6 +72,6 @@ class BookController extends Controller
 
     public function details(Book $book)
     {
-        return $book->load(['publisher','category', 'authors']);
+        return $book->load(['publisher', 'category', 'authors']);
     }
 }
