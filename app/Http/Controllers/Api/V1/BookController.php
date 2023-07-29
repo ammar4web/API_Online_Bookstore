@@ -14,15 +14,8 @@ class BookController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $books = Book::all()->load(['publisher', 'category', 'authors']);
+        return $books;
     }
 
     /**
@@ -38,16 +31,9 @@ class BookController extends Controller
      */
     public function show(Book $book)
     {
-        //
+        return $book->load(['publisher', 'category', 'authors']);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Book $book)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
