@@ -4,20 +4,20 @@ namespace App\Traits;
 
 trait ImageUploadTrait
 {
-    protected $image_path  = "app/public/images/covers";
-    protected $img_height = 600;
-    protected $img_width = 600;
+    protected static $image_path  = "app/public/images/covers";
+    protected static $img_height = 600;
+    protected static $img_width = 600;
 
-    public function uploadImage($img)
+    public static function uploadImage($img)
     {
-        $img_name = $this->imageName($img);
+        $img_name = self::imageName($img);
 
-        \Image::make($img)->resize($this->img_width, $this->img_height)->save(storage_path($this->image_path.'/'.$img_name));
+        \Image::make($img)->resize(self::$img_width, self::$img_height)->save(storage_path(self::$image_path.'/'.$img_name));
 
         return "images/covers/" . $img_name;
     }
 
-    public function imageName($image)
+    public static function imageName($image)
     {
         return time().'-'.$image->getClientOriginalName();
     }
