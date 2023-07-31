@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreBookRequest;
+use App\Http\Requests\UpdateBookRequest;
 use App\Models\Book;
 use App\Models\Author;
 use App\Models\Category;
@@ -74,9 +75,20 @@ class BookController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Book $book)
+    public function update(UpdateBookRequest $request, Book $book)
     {
-        //
+        // return $request->all();
+        $book = BookService::update($request->all(), $book);
+
+
+        session()->flash('flash_message', 'تم تعديل الكتاب بنجاح');
+
+        $data = [
+            'message' => 'Book data has been updated',
+            'updated_book' => $book->load(['publisher', 'category', 'authors']),
+        ];
+
+        return $data;
     }
 
     /**
