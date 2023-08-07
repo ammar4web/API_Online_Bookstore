@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Api\V1\AuthorController;
 use App\Http\Controllers\Api\V1\BookController;
 use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\PublisherController;
@@ -12,4 +13,5 @@ Route::prefix('/admin')->middleware(['auth:sanctum', 'can:update-books'])->group
     Route::apiResource('/books', BookController::class);
     Route::apiResource('/categories', CategoryController::class);
     Route::apiResource('/publishers', PublisherController::class);
+    Route::apiResource('/authors', AuthorController::class);
 });

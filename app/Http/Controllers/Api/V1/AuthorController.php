@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreAuthorRequestest;
+use App\Http\Requests\UpdateAuthorRequestest;
 use App\Models\Author;
 use Illuminate\Http\Request;
 
@@ -13,23 +15,35 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $categories = Author::all()->load(['books']);
+        return $categories;
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreAuthorRequestest $request)
     {
-        //
+        try {
+
+            $author = new Author($request->validated());
+            $author->save();
+
+            $data = [
+                'message' => 'Author was added successfully',
+                'author' => $author,
+            ];
+
+            return $data;
+
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'message' => 'Failed to add the Author.',
+                'erorr' => $e->getMessage(),
+            ], 500);
+
+        }
     }
 
     /**
@@ -37,23 +51,32 @@ class AuthorController extends Controller
      */
     public function show(Author $author)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Author $author)
-    {
-        //
+        return $author->load(['books']);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Author $author)
+    public function update(UpdateAuthorRequestest $request, Author $author)
     {
-        //
+        try {
+
+            $author->update($request->validated());
+            $data = [
+                'message' => 'Author was updated successfully',
+                'newAuthor' => $author,
+            ];
+
+            return $data;
+
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'message' => 'Failed to add the Author.',
+                'erorr' => $e->getMessage(),
+            ], 500);
+
+        }
     }
 
     /**
@@ -61,7 +84,25 @@ class AuthorController extends Controller
      */
     public function destroy(Author $author)
     {
-        //
+        try {
+
+            $author_delete = $author;
+            $author->delete();
+            $data = [
+                'message' => 'Author was deleted successfully',
+                'newAuthor' => $author_delete,
+            ];
+
+            return $data;
+
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'message' => 'Failed to add the Author.',
+                'erorr' => $e->getMessage(),
+            ], 500);
+
+        }
     }
 
     public function result(Author $author)
