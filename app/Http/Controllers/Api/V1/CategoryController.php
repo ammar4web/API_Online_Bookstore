@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -13,23 +15,35 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $categories = Category::all()->load(['books']);
+        return $categories;
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreCategoryRequest $request)
     {
-        //
+        try {
+
+            $category = new Category($request->validated());
+            $category->save();
+
+            $data = [
+                'message' => 'Category was added successfully',
+                'category' => $category,
+            ];
+
+            return $data;
+
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'message' => 'Failed to add the Category.',
+                'erorr' => $e->getMessage(),
+            ], 500);
+
+        }
     }
 
     /**
@@ -37,23 +51,32 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Category $category)
-    {
-        //
+        return $category->load(['books']);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Category $category)
+    public function update(UpdateCategoryRequest $request, Category $category)
     {
-        //
+        try {
+
+            $category->update($request->validated());
+            $data = [
+                'message' => 'Category was updated successfully',
+                'newCategory' => $category,
+            ];
+
+            return $data;
+
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'message' => 'Failed to add the Category.',
+                'erorr' => $e->getMessage(),
+            ], 500);
+
+        }
     }
 
     /**
@@ -61,7 +84,25 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        try {
+
+            $category_delete = $category;
+            $category->delete();
+            $data = [
+                'message' => 'Category was deleted successfully',
+                'newCategory' => $category_delete,
+            ];
+
+            return $data;
+
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'message' => 'Failed to add the Category.',
+                'erorr' => $e->getMessage(),
+            ], 500);
+
+        }
     }
 
     public function result(Category $category)
@@ -77,8 +118,7 @@ class CategoryController extends Controller
         return $data;
     }
 
-    public function list()
-    {
+    function list() {
         $categories = Category::all()->sortBy('name')->load(['books']);
         $title = 'التصنيفات';
 
