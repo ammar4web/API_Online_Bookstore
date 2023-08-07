@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StorePublisherRequest;
+use App\Http\Requests\UpdatePublisherRequest;
 use App\Models\Publisher;
 use Illuminate\Http\Request;
 
@@ -13,23 +15,34 @@ class PublisherController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $publishers = Publisher::all()->load(['books']);
+        return $publishers;
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StorePublisherRequest $request)
     {
-        //
+        try {
+            $publisher = new Publisher($request->validated());
+            $publisher->save();
+
+            $data = [
+                'message' => 'publisher was added successfully',
+                'publisher' => $publisher,
+            ];
+
+            return $data;
+
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'message' => 'Failed to add the publisher.',
+                'erorr' => $e->getMessage(),
+            ], 500);
+
+        }
     }
 
     /**
@@ -37,23 +50,32 @@ class PublisherController extends Controller
      */
     public function show(Publisher $publisher)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Publisher $publisher)
-    {
-        //
+        return $publisher->load(['books']);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Publisher $publisher)
+    public function update(UpdatePublisherRequest $request, Publisher $publisher)
     {
-        //
+        try {
+
+            $publisher->update($request->validated());
+            $data = [
+                'message' => 'publisher was updated successfully',
+                'newPublisher' => $publisher,
+            ];
+
+            return $data;
+
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'message' => 'Failed to add the publisher.',
+                'erorr' => $e->getMessage(),
+            ], 500);
+
+        }
     }
 
     /**
@@ -61,7 +83,25 @@ class PublisherController extends Controller
      */
     public function destroy(Publisher $publisher)
     {
-        //
+        try {
+
+            $publisher_delete = $publisher;
+            $publisher->delete();
+            $data = [
+                'message' => 'publisher was deleted successfully',
+                'new publisher' => $publisher_delete,
+            ];
+
+            return $data;
+
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'message' => 'Failed to add the publisher.',
+                'erorr' => $e->getMessage(),
+            ], 500);
+
+        }
     }
 
     public function result(Publisher $publisher)
@@ -77,8 +117,7 @@ class PublisherController extends Controller
         return $data;
     }
 
-    public function list()
-    {
+    function list() {
         $publishers = Publisher::all()->sortBy('name')->load(['books']);
         $title = 'الناشرون';
 
