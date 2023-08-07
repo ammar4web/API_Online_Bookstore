@@ -26,6 +26,9 @@ return new class extends Migration
                 ->references('id')
                 ->on('books')
                 ->onDelete('cascade');
+
+            // Add a unique constraint for the combination of author_id and book_id
+            $table->unique(['author_id', 'book_id']);
         });
     }
 
