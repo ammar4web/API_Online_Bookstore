@@ -13,15 +13,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $users = User::all();
+        return $users;
     }
 
     /**
@@ -37,15 +30,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(User $user)
-    {
-        //
+        return $user;
     }
 
     /**
@@ -53,7 +38,10 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $user->administration_level = $request->administration_level;
+        $user->save();
+
+        return $user;
     }
 
     /**
@@ -61,6 +49,9 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $user_delete = $user;
+        $user->delete();
+
+        return $user_delete;
     }
 }

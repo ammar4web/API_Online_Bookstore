@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\V1\AuthorController;
 use App\Http\Controllers\Api\V1\BookController;
 use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\PublisherController;
+use App\Http\Controllers\Api\V1\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('/admin')->middleware(['auth:sanctum', 'can:update-books'])->group(function() {
@@ -14,4 +15,5 @@ Route::prefix('/admin')->middleware(['auth:sanctum', 'can:update-books'])->group
     Route::apiResource('/categories', CategoryController::class);
     Route::apiResource('/publishers', PublisherController::class);
     Route::apiResource('/authors', AuthorController::class);
+    Route::apiResource('/users', UserController::class)->middleware('can:update-users');
 });
