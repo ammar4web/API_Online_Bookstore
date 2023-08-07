@@ -10,6 +10,7 @@ use App\Models\Author;
 use App\Models\Category;
 use App\Models\Publisher;
 use App\Services\BookService;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
 class BookController extends Controller
@@ -96,7 +97,20 @@ class BookController extends Controller
      */
     public function destroy(Book $book)
     {
-        //
+
+        $deleted_book = $book->load(['publisher', 'category', 'authors']);
+        Storage::disk('public')->delete($book->cover_image);
+
+        $book->delete();
+
+        session()->flash('flash_message','تم حذف الكتاب بنجاح');
+
+        $data = [
+            'message' => 'The Book has been deleted successfully',
+            'deleted_book' => $deleted_book,
+        ];
+
+        return $data;
     }
 
     public function details(Book $book)
