@@ -12,6 +12,10 @@ Route::get('/', [GalleryController::class, 'index'])->name('gallery.index');
 Route::get('/search', [GalleryController::class, 'search'])->name('search');
 
 Route::get('/book/{book}', [BookController::class, 'details'])->name('book.details');
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/book/{book}/rate', [BookController::class, 'rate'])->name('book.rate');
+});
+
 
 Route::get('/categories', [CategoryController::class, 'list'])->name('gallery.categories.index');
 Route::get('/categories/search', [CategoryController::class, 'search'])->name('gallery.categories.search');

@@ -9,6 +9,7 @@ use App\Models\Book;
 use App\Models\Author;
 use App\Models\Category;
 use App\Models\Publisher;
+use App\Models\Rating;
 use App\Services\BookService;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
@@ -115,6 +116,26 @@ class BookController extends Controller
 
     public function details(Book $book)
     {
-        return $book->load(['publisher', 'category', 'authors']);
+        $book->load(['publisher', 'category', 'authors', 'ratings']);
+        return $date = [
+            $book,
+            $book->rate()
+        ];
+    }
+
+    public function rate(Request $request, Book $book)
+    {
+        if(auth()->user()->rated($book)) {
+            $rating = Rating::where(['user_id' => auth()->user()->id, 'book_id' => $book->id])->first();
+            $rating->value = $request->value;
+            $rating->save();
+        } else {
+            $rating = new Rating;
+            $rating->user_id = auth()->user()->id;
+            $rating->book_id = $book->id;
+            $rating->value = $request->value;
+            $rating->save();
+        }
+        return redirect()->route('book.details', $book->id);
     }
 }
